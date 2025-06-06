@@ -2,21 +2,19 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { GEMINI_MODEL_NAME } from '../constants';
 
-// API_KEY must be obtained exclusively from process.env.API_KEY.
-// Assume this variable is pre-configured, valid, and accessible.
-// The GoogleGenAI constructor will use this key.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// API key must be obtained from the GEMINI_API_KEY environment variable.
+// The Vite configuration exposes this value at build time.
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// This function ensures that process.env.API_KEY, which is passed to GoogleGenAI,
-// meets the basic expectation of being a non-empty string.
-// The GoogleGenAI SDK itself will handle the actual validity of the key.
+// Ensure that process.env.GEMINI_API_KEY is a non-empty string before invoking
+// the SDK. The GoogleGenAI library will validate the actual key.
 function ensureApiKeyIsConfigured(): void {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   // Check if apiKey is a string and if, after trimming, it has length.
   // This covers undefined, null, empty string, or whitespace-only string.
   if (typeof apiKey !== 'string' || apiKey.trim().length === 0) {
-    console.error("API_KEY for Gemini is not set as a non-empty string in environment variables. It's assumed to be pre-configured and valid.");
-    throw new Error("API Key for Gemini is not configured as expected in environment variables. Please ensure API_KEY is a non-empty string.");
+    console.error("GEMINI_API_KEY is not set as a non-empty string in environment variables. It's assumed to be pre-configured and valid.");
+    throw new Error("API Key for Gemini is not configured as expected in environment variables. Please ensure GEMINI_API_KEY is a non-empty string.");
   }
 }
 
